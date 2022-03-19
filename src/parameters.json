@@ -1,0 +1,15 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "connections_keyvault_name": {
+            "value": null
+        },
+        "vaults_integrity_plus_apps_name": {
+            "value": null
+        },
+        "workflows_lock_default_branch_name": {
+            "value": null
+        }
+    }
+}
