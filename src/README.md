@@ -14,7 +14,7 @@ Two Azure service components were used in setting up the API
 | Azure Logic App | Primary API PaaS using containerised runtime |
 | Azure Key Vault | Vault for storing secrets and personal access token to connect to the GitHub organization |
 
-![High level overview of Web API](images/high-level-architecture.png)
+<img alt="High level overview of Web API" src="images/high-level-architecture.png" width="600"></img>
 
 ## API Logic Flow
 The web API depends on the GitHub [REST API](https://docs.github.com/en/rest) (branches and issues) for retrieving and sending data to/from the GitHub organization. This makes use of [Basic Authentication](https://docs.github.com/en/rest/overview/other-authentication-methods#via-oauth-and-personal-access-tokens) using OAuth tokens. The authentication token is stored as a secret in the key vault during [deployment](#how-to-deploy).
@@ -24,7 +24,8 @@ The web API depends on the GitHub [REST API](https://docs.github.com/en/rest) (b
 > GitHub has discontinued password authentication to the API starting on November 13, 2020 for all GitHub.com accounts, including those on a GitHub Free, GitHub Pro, GitHub Team, or GitHub Enterprise Cloud plan. You must now authenticate to the GitHub API with an API token, such as an OAuth access token, GitHub App installation access token, or personal access token.
 
 The diagram below shows the logic flow of the web API.
-![Process flow of API](images/flow-diagram.png)
+
+<img alt="Process flow of API" src="images/flow-diagram.png" width="600"></img>
 
 ### Trigger event
 The [webhook](/README.md#Implement-default-branch-protection), as mentioned in the solution approach, generates a payload whenever a branch or tag is created on any repository in the organization. The API App is configured with a manual trigger, listening to a POST call, and the JSON schema is matched with what is expected to be received.
@@ -36,7 +37,7 @@ The API then stores three important properties from the request body in variable
 | body.master_branch           | The default branch name of the repo. Appended this to the branches URL later in the code |
 | body.repository.issues_url   | The API URL to manage issues of the repo. Removed the trailing `{/number}` |
 
-![API manual trigger](images/manual-trigger.png)
+<img alt="API manual trigger" src="images/manual-trigger.png" width="600"></img>
 
 
 ### Validation
@@ -66,4 +67,4 @@ This makes use of Azure ARM template deployment, using a [template file](templat
  ### Post-deployment steps
  Once the logic app is ready, open the logic app resource and click on Logic App designer. Then, click on the _When HTTP request is received_ trigger to expand it. Then copy the `HTTP POST URL` text into a temporary text file. Then create a webhook with the properties specified in the [solution approach](/README.md/#Implement-default-branch-protection).
 
- ![Expanded trigger](images/trigger-expanded.png)
+<img alt="Expanded trigger" src="images/trigger-expanded.png" width="600"></img>
