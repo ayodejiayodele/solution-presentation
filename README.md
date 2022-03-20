@@ -35,6 +35,8 @@ It is important to configure security features in the organization to complement
 
 - Two-factor authentication: Zero-trust security is essential to ensure only the right people have access to the customer's code.
 ![Enable 2FA](images/require-2fa.png)
+_Two-factor authentication is enabled._
+
 - Code security and analysis
   - Enable dependency graph
   - Enable dependabot alerts
@@ -51,6 +53,9 @@ The .github directory is used to store community health files as well as the org
 This was achieved with two components, a webhook to listen to [organization events](https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads), and a [custom web API](src/readme.md) to receive the delivery of the webhook's payload and orchestrate the application of the branch protection as well as create the issue in the repository.
 
 **Webhook**
+
+> Before creating the webhook, the URL of the API needs to be ready. Therefore, you should already deploy/host the web API before carrying out this step.
+
 The webhook was created with the following properties:
 | Property | Value |
 | --- | --- |
@@ -58,6 +63,7 @@ The webhook was created with the following properties:
 | Content type | application/json |
 | SSL verification | Enable |
 | Events to trigger | Branch or tag creation _(only 1 event)_ |
+
 
 **Web API**
 A separate [documentation](src/readme.md) is dedicated to the Web API. Please visit the src directory.
