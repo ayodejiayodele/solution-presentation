@@ -25,7 +25,7 @@ In addition to GitHub which serves as the primary service for storing and managi
 ### Setup a GitHub organization
 
   - **Create a new organization**: This is the first natural step to take, as this customer is a business and not an individual. organizations are shared accounts where businesses can collaborate across many projects. 
-    - Organisation Name - [integrityplus](https://github.com/integrityplus)
+    - Organisation name - [integrityplus](https://github.com/integrityplus)
   - **Invite people, create teams and apply relevant roles**: 
     - Invite people: I registered one additional github user _@ayooutlook_ and invited it into the new organization. At least two users is needed in order to simulate different roles and code review approvals.
     - Create teams: I created a team _@integrityplus/security-and-compliance_ and granted it the **security manager** role. Members of a team with the security manager role have only the permissions required to effectively manager the security for the organization. [Read more](https://docs.github.com/en/organizations/managing-peoples-access-to-your-organization-with-roles/managing-security-managers-in-your-organization)
