@@ -15,7 +15,6 @@ Two Azure service components were used in setting up the API
 | Azure Key Vault | Vault for storing secrets and personal access token to connect to the GitHub organization |
 
 ![High level overview of Web API](images/high-level-architecture.png)
-_High level overview of Web API_
 
 ## API Logic Flow
 The web API depends on the GitHub [REST API](https://docs.github.com/en/rest) (branches and issues) for retrieving and sending data to/from the GitHub organization. This makes use of [Basic Authentication](https://docs.github.com/en/rest/overview/other-authentication-methods#via-oauth-and-personal-access-tokens) using OAuth tokens. The authentication token is stored as a secret in the key vault during [deployment](#how-to-deploy).
@@ -28,7 +27,7 @@ The diagram below shows the logic flow of the web API.
 ![Process flow of API](images/flow-diagram.png)
 
 ### Trigger event
-The [webhook](/readme.md#Implement-default-branch-protection), as mentioned in the solution approach, generates a payload whenever a branch or tag is created on any repository in the organization. The API App is configured with a manual trigger, listening to a POST call, and the JSON schema is matched with what is expected to be received.
+The [webhook](/README.md#Implement-default-branch-protection), as mentioned in the solution approach, generates a payload whenever a branch or tag is created on any repository in the organization. The API App is configured with a manual trigger, listening to a POST call, and the JSON schema is matched with what is expected to be received.
 
 The API then stores three important properties from the request body in variables.
 | Property                     | Description |
@@ -65,6 +64,6 @@ This makes use of Azure ARM template deployment, using a [template file](templat
  | Personal Access Token | secureString | Personal access token copied earlier. |
 
  ### Post-deployment steps
- Once the logic app is ready, open the logic app resource and click on Logic App designer. Then, click on the _When HTTP request is received_ trigger to expand it. Then copy the `HTTP POST URL` text into a temporary text file. Then create a webhook with the properties specified in the [solution approach](/readme.md/#Implement-default-branch-protection).
+ Once the logic app is ready, open the logic app resource and click on Logic App designer. Then, click on the _When HTTP request is received_ trigger to expand it. Then copy the `HTTP POST URL` text into a temporary text file. Then create a webhook with the properties specified in the [solution approach](/README.md/#Implement-default-branch-protection).
 
  ![Expanded trigger](images/trigger-expanded.png)
