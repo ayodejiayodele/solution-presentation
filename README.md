@@ -1,9 +1,12 @@
 # How I approached the solution
 I have given the customer an imaginary name.
+
 **Company Name:** Integrity Plus Inc.
 **Department:** Security and Compliance
 
 The solution was prepared by _Ayodeji Ayodele_ [![LinkedIn Profile](images/In-Blue-14@2x.png)](https://au.linkedin.com/in/ayodeji-ayodele), no external resources were used.
+
+[![Board Status](https://dev.azure.com/ayotoday/90fb8fe1-1601-4c43-ac1b-11de1158286a/d2da950a-6a9d-41f4-aecc-3647caa4b755/_apis/work/boardbadge/12665d10-715f-482a-b8d8-d98dd6214fdd?columnOptions=1)](https://dev.azure.com/ayotoday/90fb8fe1-1601-4c43-ac1b-11de1158286a/_boards/board/t/d2da950a-6a9d-41f4-aecc-3647caa4b755/Microsoft.RequirementCategory/)
 
 ## Problem Statement
 - Ensure proper code reviews for all code being added to our repositories.
@@ -17,7 +20,7 @@ In addition to GitHub which serves as the primary service for storing and managi
 |  Platform       | Purpose |
 | --------------- | ------- |
 | Azure Logic App | Web API for receiving webhook deliveries from the GitHub organization. Visit the [src](src/readme.md) directory for documentation on architecture and how to deploy. |
-| Azure Boards    | Project tracking and management |
+| Azure Boards    | Project tracking and management  |
 
 ### Setup a GitHub organization
 
