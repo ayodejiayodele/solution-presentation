@@ -4,3 +4,6 @@
 
 
 Please update this README to reflect the relevant information for your product.
+
+
+## How I approached the solution
