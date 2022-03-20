@@ -10,6 +10,9 @@
         },
         "workflows_lock_default_branch_name": {
             "value": null
+        },
+        "strings_personal_access_token":{
+            "value": null
         }
     }
 }

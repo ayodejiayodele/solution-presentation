@@ -13,6 +13,10 @@
         "workflows_lock_default_branch_name": {
             "defaultValue": "lock-default-branch",
             "type": "String"
+        },
+        "strings_personal_access_token":{
+            "value": null,
+            "type": "secureString"
         }
     },
     "variables": {},
@@ -131,7 +135,8 @@
             "properties": {
                 "attributes": {
                     "enabled": true
-                }
+                },
+                "value": "[parameters('strings_personal_access_token')]"
             }
         },
         {
