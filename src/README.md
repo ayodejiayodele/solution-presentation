@@ -50,7 +50,7 @@ Once validated to be true for both conditions, the API retrieves the personal ac
 ## How to Deploy
 This makes use of Azure ARM template deployment, using a [template file](template.json). For other deployment methods please visit [deployment operations on Azure](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/deploy-portal).
 
-[![Deploy To Azure](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fintegrityplus%2Fsolution-presentation%2Fuser%2Fayodejiayodele%2Fapi-logic%2Fsrc%2Ftemplate.json)
+[![Deploy To Azure](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fintegrityplus%2Fsolution-presentation%2Fmain%2Fsrc%2Ftemplate.json)
 
 ### Pre-requiresites for deployment
  - [x] An Azure subscription with at least `Contributor` role on the existing resource group or permissions to create a new one.
