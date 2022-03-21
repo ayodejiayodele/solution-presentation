@@ -43,7 +43,7 @@ The API then stores three important properties from the request body in variable
 ### Validation
 The request header in the payload comes with a header property `X-GitHub-Event` that indicates which organization event fired the webhook. In the case of branch creation, the value of this header is expected to be `create`. Below is a sample request header.
 
-```
+```json
   "headers": {
     "Connection": "close",
     "Accept": "*/*",
@@ -63,7 +63,7 @@ In addition to validating the event, the API also verifies if the branch created
 
 The following is an example payload showing the branch that was newly created in the repository is `main` and  the default branch name for the repository is also `main`. Note that the majority of the JSON content has been removed from this example for brevity.
 
-```
+```json
   "body": {
     "ref": "main",
     "ref_type": "branch",
@@ -91,6 +91,13 @@ The following is an example payload showing the branch that was newly created in
 
 ### Processing
 Once validated to be true for both conditions, the API retrieves the personal access token from the key vault and passes this along with the username as Basic Authentication in subsequent API calls.
+
+**API Calls**
+1. [Update branch protection](https://docs.github.com/en/rest/reference/branches#update-branch-protection) :: `HTTP PUT`
+2. [Get branch protection](https://docs.github.com/en/rest/reference/branches#get-branch-protection) :: `HTTP GET`
+3. [Create an issue](https://docs.github.com/en/rest/reference/issues#create-an-issue) :: `HTTP POST`
+
+<img alt="Remaining workflow steps" src="images/logic-app-rest-calls.png" width="600" />
 
 
 ## How to Deploy
