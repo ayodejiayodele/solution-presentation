@@ -96,6 +96,9 @@
             "apiVersion": "2016-06-01",
             "name": "[parameters('connections_logicapp_keyvault_name')]",
             "location": "[resourceGroup().location]",
+            "dependsOn": [
+                "[resourceId('Microsoft.KeyVault/vaults', parameters('vaults_key_vault_name'))]"
+            ],
             "kind": "V1",
             "properties": {
                 "displayName": "Key Vault Connection",
@@ -638,7 +641,7 @@
                                         "path": "/secrets/@{encodeURIComponent('github-pat')}/value"
                                     }
                                 },
-                                "HTTP": {
+                                "HTTP_Create_issue": {
                                     "runAfter": {
                                         "HTTP_Get_branch_protection": [
                                             "Succeeded"
@@ -652,7 +655,7 @@
                                             "username": "ayodejiaydoele"
                                         },
                                         "body": {
-                                            "body": "# Branch Protection \r\nHi @ayodejiayodele, \r\n This is to let you know that your branch,  **@{variables('defaultBranch')}** is now under branch protection. We highly recommend that you keep to the required code reviews and security policies as prescribed by the Security and Compliance department. Below is a list of protection added:\r\n\r\n ### Branch protections \r\n  @{body('HTTP_Get_branch_protection')} \r\n\r\n For more information please contact @integrityplus/security-and-compliance team. \r\n\r\n Thank you.",
+                                            "body": "# Branch Protection \r\nHi @ayodejiayodele, \r\n This is to let you know that your branch,  **@{variables('defaultBranch')}** is now under branch protection. We highly recommend that you keep to the required code reviews and security policies as prescribed by the Security and Compliance department. Below is a list of protection added:\r\n\r\n ### Branch protections \r\n  - required_pull_request_reviews\r\n    - dismiss_stale_reviews: `enabled`\r\n    - require_code_owner_reviews: `enabled`\r\n    - required_approving_review_count: `1`\r\n    - dismissal_restrictions: `teams`\r\n- enforce_admins: `enabled`\r\n\r\n For more information please contact @integrityplus/security-and-compliance team. \r\n\r\n Thank you.",
                                             "labels": [
                                                 "documentation"
                                             ],
