@@ -17,7 +17,7 @@ Two Azure service components were used in setting up the API
 <img alt="High level overview of Web API" src="images/high-level-architecture.png" width="600"></img>
 
 ## API Logic Flow
-The web API depends on the GitHub [REST API](https://docs.github.com/en/rest) (branches and issues) for retrieving and sending data to/from the GitHub organization. This makes use of [Basic Authentication](https://docs.github.com/en/rest/overview/other-authentication-methods#via-oauth-and-personal-access-tokens) using OAuth tokens. The authentication token is stored as a secret in the key vault during [deployment](#how-to-deploy).
+The web API depends on the GitHub [REST API](https://docs.github.com/en/rest) (branches and issues) for retrieving and sending data to/from the GitHub organization. This makes use of [Basic Authentication](https://docs.github.com/en/rest/overview/other-authentication-methods#via-oauth-and-personal-access-tokens) using OAuth tokens. The authentication token is stored as a secret in the key vault during infrastructure-as-code [deployment](#how-to-deploy).
 
 
 > To successfully make REST API calls to GitHub, you need to [generate a Personal Access Token (PAT)](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token#creating-a-token) for the user who is an owner of the organization.
@@ -28,23 +28,76 @@ The diagram below shows the logic flow of the web API.
 <img alt="Process flow of API" src="images/flow-diagram.png" width="1000"></img>
 
 ### Trigger event
-The [webhook](/README.md#Implement-default-branch-protection), as mentioned in the solution approach, generates a payload whenever a branch or tag is created on any repository in the organization. The API App is configured with a manual trigger, listening to a POST call, and the JSON schema is matched with what is expected to be received.
+The webhook, as mentioned in the [solution approach](/README.md#webhook), generates a payload whenever a branch or tag is created on any repository in the organization. The API App is configured with a manual trigger, listening to a POST call, and the JSON schema is matched with what is expected to be received.
 
 The API then stores three important properties from the request body in variables.
 | Property                     | Description |
-| ---------------------------- |
-| body.repository.branches_url | The API URL to manage branches of the repo. Removed the trailing `{/branch}` |
-| body.master_branch           | The default branch name of the repo. Appended this to the branches URL later in the code |
-| body.repository.issues_url   | The API URL to manage issues of the repo. Removed the trailing `{/number}` |
+| ---------------------------- | ----------- |
+| `body.repository.branches_url` | The API URL to manage branches of the repo. Removed the trailing `{/branch}` |
+| `body.master_branch`           | The default branch name of the repo. Appended this to the branches URL later in the code |
+| `body.repository.issues_url`   | The API URL to manage issues of the repo. Removed the trailing `{/number}` |
 
 <img alt="API manual trigger" src="images/manual-trigger.png" width="600"></img>
 
 
 ### Validation
-The request header comes a header property `X-GitHub-Event`, which indicates what organization event fired the webhook. In the case of branch creation, the value of this header is expected to be `create`. In addition to validating the event, the API also verifies if this is the branch created matches the default branch name for the repo i.e. `body.ref` should be the same as `body.master_branch`.
+The request header in the payload comes with a header property `X-GitHub-Event` that indicates which organization event fired the webhook. In the case of branch creation, the value of this header is expected to be `create`. Below is a sample request header.
+
+```json
+  "headers": {
+    "Connection": "close",
+    "Accept": "*/*",
+    "Host": "prod-25.australiasoutheast.logic.azure.com:443",
+    "User-Agent": "GitHub-Hookshot/d51dd3b",
+    "X-GitHub-Delivery": "934d6c40-a908-11ec-87c3-c76e6c2397e3",
+    "X-GitHub-Event": "create",
+    "X-GitHub-Hook-ID": "348815410",
+    "X-GitHub-Hook-Installation-Target-ID": "101906266",
+    "X-GitHub-Hook-Installation-Target-Type": "organization",
+    "Content-Length": "7439",
+    "Content-Type": "application/json"
+  }
+```
+
+In addition to validating the event, the API also verifies if the branch created matches the default branch name for the repository i.e. `body.ref` should be the same as `body.master_branch`. 
+
+The following is an example payload showing the branch that was newly created in the repository is `main` and  the default branch name for the repository is also `main`. Note that the majority of the JSON content has been removed from this example for brevity.
+
+```json
+  "body": {
+    "ref": "main",
+    "ref_type": "branch",
+    "master_branch": "main",
+    "description": "Repo for storing solution and documentation",
+    "pusher_type": "user",
+    "repository": {
+      "id": 471815219,
+      "node_id": "R_kgDOHB9UMw",
+      "name": "solution-presentation",
+      "full_name": "integrityplus/solution-presentation",
+      ...
+      "site_admin": false
+     },
+     "html_url": "https://github.com/integrityplus/solution-presentation",
+     "description": "Repo for storing solution and documentation",
+     ...
+     "branches_url": "https://api.github.com/repos/integrityplus/solution-presentation/branches{/branch}",
+     ...
+     "issues_url": "https://api.github.com/repos/integrityplus/solution-presentation/issues{/number}",
+     ...
+   }
+  }
+```
 
 ### Processing
 Once validated to be true for both conditions, the API retrieves the personal access token from the key vault and passes this along with the username as Basic Authentication in subsequent API calls.
+
+**API Calls**
+1. [Update branch protection](https://docs.github.com/en/rest/reference/branches#update-branch-protection) :: `HTTP PUT`
+2. [Get branch protection](https://docs.github.com/en/rest/reference/branches#get-branch-protection) :: `HTTP GET`
+3. [Create an issue](https://docs.github.com/en/rest/reference/issues#create-an-issue) :: `HTTP POST`
+
+<img alt="Remaining workflow steps" src="images/logic-app-rest-calls.png" width="600" />
 
 
 ## How to Deploy
