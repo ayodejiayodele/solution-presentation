@@ -41,7 +41,53 @@ The API then stores three important properties from the request body in variable
 
 
 ### Validation
-The request header comes a header property `X-GitHub-Event`, which indicates what organization event fired the webhook. In the case of branch creation, the value of this header is expected to be `create`. In addition to validating the event, the API also verifies if this is the branch created matches the default branch name for the repo i.e. `body.ref` should be the same as `body.master_branch`.
+The request header in the payload comes with a header property `X-GitHub-Event` that indicates which organization event fired the webhook. In the case of branch creation, the value of this header is expected to be `create`. Below is a sample request header.
+
+```
+  "headers": {
+    "Connection": "close",
+    "Accept": "*/*",
+    "Host": "prod-25.australiasoutheast.logic.azure.com:443",
+    "User-Agent": "GitHub-Hookshot/d51dd3b",
+    "X-GitHub-Delivery": "934d6c40-a908-11ec-87c3-c76e6c2397e3",
+    "X-GitHub-Event": "create",
+    "X-GitHub-Hook-ID": "348815410",
+    "X-GitHub-Hook-Installation-Target-ID": "101906266",
+    "X-GitHub-Hook-Installation-Target-Type": "organization",
+    "Content-Length": "7439",
+    "Content-Type": "application/json"
+  }
+```
+
+In addition to validating the event, the API also verifies if the branch created matches the default branch name for the repository i.e. `body.ref` should be the same as `body.master_branch`. 
+
+The following is an example payload showing the branch that was newly created in the repository is `main` and  the default branch name for the repository is also `main`. Note that the majority of the JSON content has been removed from this example for brevity.
+
+```
+  "body": {
+    "ref": "main",
+    "ref_type": "branch",
+    "master_branch": "main",
+    "description": "Repo for storing solution and documentation",
+    "pusher_type": "user",
+    "repository": {
+      "id": 471815219,
+      "node_id": "R_kgDOHB9UMw",
+      "name": "solution-presentation",
+      "full_name": "integrityplus/solution-presentation",
+      ...
+      "site_admin": false
+     },
+     "html_url": "https://github.com/integrityplus/solution-presentation",
+     "description": "Repo for storing solution and documentation",
+     ...
+     "branches_url": "https://api.github.com/repos/integrityplus/solution-presentation/branches{/branch}",
+     ...
+     "issues_url": "https://api.github.com/repos/integrityplus/solution-presentation/issues{/number}",
+     ...
+   }
+  }
+```
 
 ### Processing
 Once validated to be true for both conditions, the API retrieves the personal access token from the key vault and passes this along with the username as Basic Authentication in subsequent API calls.
