@@ -96,6 +96,9 @@
             "apiVersion": "2016-06-01",
             "name": "[parameters('connections_logicapp_keyvault_name')]",
             "location": "[resourceGroup().location]",
+            "dependsOn": [
+                "[resourceId('Microsoft.KeyVault/vaults', parameters('vaults_key_vault_name'))]"
+            ],
             "kind": "V1",
             "properties": {
                 "displayName": "Key Vault Connection",
