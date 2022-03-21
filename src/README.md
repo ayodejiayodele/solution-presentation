@@ -17,7 +17,7 @@ Two Azure service components were used in setting up the API
 <img alt="High level overview of Web API" src="images/high-level-architecture.png" width="600"></img>
 
 ## API Logic Flow
-The web API depends on the GitHub [REST API](https://docs.github.com/en/rest) (branches and issues) for retrieving and sending data to/from the GitHub organization. This makes use of [Basic Authentication](https://docs.github.com/en/rest/overview/other-authentication-methods#via-oauth-and-personal-access-tokens) using OAuth tokens. The authentication token is stored as a secret in the key vault during [deployment](#how-to-deploy).
+The web API depends on the GitHub [REST API](https://docs.github.com/en/rest) (branches and issues) for retrieving and sending data to/from the GitHub organization. This makes use of [Basic Authentication](https://docs.github.com/en/rest/overview/other-authentication-methods#via-oauth-and-personal-access-tokens) using OAuth tokens. The authentication token is stored as a secret in the key vault during infrastructure-as-code [deployment](#how-to-deploy).
 
 
 > To successfully make REST API calls to GitHub, you need to [generate a Personal Access Token (PAT)](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token#creating-a-token) for the user who is an owner of the organization.
@@ -28,14 +28,14 @@ The diagram below shows the logic flow of the web API.
 <img alt="Process flow of API" src="images/flow-diagram.png" width="1000"></img>
 
 ### Trigger event
-The [webhook](/README.md#Implement-default-branch-protection), as mentioned in the solution approach, generates a payload whenever a branch or tag is created on any repository in the organization. The API App is configured with a manual trigger, listening to a POST call, and the JSON schema is matched with what is expected to be received.
+The webhook, as mentioned in the [solution approach](/README.md#webhook), generates a payload whenever a branch or tag is created on any repository in the organization. The API App is configured with a manual trigger, listening to a POST call, and the JSON schema is matched with what is expected to be received.
 
 The API then stores three important properties from the request body in variables.
 | Property                     | Description |
-| ---------------------------- |
-| body.repository.branches_url | The API URL to manage branches of the repo. Removed the trailing `{/branch}` |
-| body.master_branch           | The default branch name of the repo. Appended this to the branches URL later in the code |
-| body.repository.issues_url   | The API URL to manage issues of the repo. Removed the trailing `{/number}` |
+| ---------------------------- | ----------- |
+| `body.repository.branches_url` | The API URL to manage branches of the repo. Removed the trailing `{/branch}` |
+| `body.master_branch`           | The default branch name of the repo. Appended this to the branches URL later in the code |
+| `body.repository.issues_url`   | The API URL to manage issues of the repo. Removed the trailing `{/number}` |
 
 <img alt="API manual trigger" src="images/manual-trigger.png" width="600"></img>
 
