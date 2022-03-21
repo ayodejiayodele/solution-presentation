@@ -25,7 +25,7 @@ The web API depends on the GitHub [REST API](https://docs.github.com/en/rest) (b
 
 The diagram below shows the logic flow of the web API.
 
-<img alt="Process flow of API" src="images/flow-diagram.png" width="600"></img>
+<img alt="Process flow of API" src="images/flow-diagram.png" width="1000"></img>
 
 ### Trigger event
 The [webhook](/README.md#Implement-default-branch-protection), as mentioned in the solution approach, generates a payload whenever a branch or tag is created on any repository in the organization. The API App is configured with a manual trigger, listening to a POST call, and the JSON schema is matched with what is expected to be received.
