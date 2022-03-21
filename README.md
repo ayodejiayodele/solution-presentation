@@ -72,4 +72,4 @@ The webhook was created with the following properties:
 
 ### Web API
 
-A separate [documentation](./src/README.md) is dedicated to the Web API. Please visit the src directory.
+A separate documentation is dedicated to the Web API. Please visit the [src directory](./src/README.md).
