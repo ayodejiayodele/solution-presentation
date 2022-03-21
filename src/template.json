@@ -121,7 +121,7 @@
                     "description": "Azure Key Vault is a service to securely store and access secrets.",
                     "iconUri": "[concat('https://connectoricons-prod.azureedge.net/releases/v1.0.1555/1.0.1555.2715/', parameters('connections_logicapp_keyvault_name'), '/icon.png')]",
                     "brandColor": "#0079d6",
-                    "id": "[concat('/subscriptions/2dfde30a-e159-4e6f-9ebf-071a5f78e3c3/providers/Microsoft.Web/locations/',resourceGroup().location,'/managedApis/', parameters('connections_logicapp_keyvault_name'))]",
+                    "id": "[concat('/subscriptions/',subscription().id,'/providers/Microsoft.Web/locations/',resourceGroup().location,'/managedApis/', parameters('connections_logicapp_keyvault_name'))]",
                     "type": "Microsoft.Web/locations/managedApis"
                 },
                 "testLinks": []
@@ -810,8 +810,8 @@
                         "value": {
                             "keyvault": {
                                 "connectionId": "[resourceId('Microsoft.Web/connections', parameters('connections_logicapp_keyvault_name'))]",
-                                "connectionName": "keyvault",
-                                "id": "/subscriptions/2dfde30a-e159-4e6f-9ebf-071a5f78e3c3/providers/Microsoft.Web/locations/australiasoutheast/managedApis/keyvault"
+                                "connectionName": "[parameters('connections_logicapp_keyvault_name')]",
+                                "id": "[concat('/subscriptions/',subscription().id,'/providers/Microsoft.Web/locations/',resourceGroup().location,'/managedApis/',parameters('connections_logicapp_keyvault_name'))]"
                             }
                         }
                     }
