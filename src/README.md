@@ -107,7 +107,7 @@ This makes use of Azure ARM template deployment, using a [template file](templat
 
 ### Pre-requiresites for deployment
  - [x] An Azure subscription with at least `Contributor` role on the existing resource group or permissions to create a new one.
- - [x] A personal access token, copy temporarily to a text file.
+ - [x] A GitHub personal access token, copy temporarily to a text file. People with `admin` permissions to a repository can manage branch protection rules.
  
  ### Parameters required
  | Parameter Name        | Type         | Description |
