@@ -8,38 +8,11 @@ on:
   pull_request:
     branches: [ main ]
 
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-    inputs:
-      resource_group_name:
-        description: 'Name of the resource group for the environment.'
-        required: true
-        type: string
-        default: 'github-test-demo'
-      location:
-        description: 'Azure region to deploy to'
-        type: string
-        default: 'australiasoutheast'
-      subscription_id:
-        description: 'Azure subscription id'
-        required: true
-        type: string
-      keyvault_name:
-        description: 'Name of the Azure Key Vault resource'
-        required: true
-        type: string
-      logic_app_name:
-        description: 'Name of the Logic App web API resource'
-        required: true
-        type: string
-        
-env:
-  keyvault_logicapp_connection: kv-la-conn
-
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   azure_deploy:
     runs-on: ubuntu-latest
+    environment: Staging
     steps:
       - uses: actions/checkout@v2
       
@@ -55,10 +28,10 @@ jobs:
         run: |
           echo ===== Before ======
           cat 'src/parameters.json'
-          jq '.parameters.connections_logicapp_keyvault_name.value |= "${{ github.event.inputs.keyvault_logicapp_connection }}"' src/parameters.json
-          jq '.parameters.vaults_key_vault_name.value |= "${{ github.event.inputs.keyvault_name }}"' src/parameters.json
-          jq '.parameters.workflows_lock_default_branch_name.value |= "${{ github.event.inputs.logic_app_name }}"' src/parameters.json
-          jq '.parameters.strings_personal_access_token.value |= "${{ secrets.GITHUB_APP_SECRET }}"' src/parameters.json
+          jq '.parameters.connections_logicapp_keyvault_name.value |= "${{ secrets.AZ_RG_DV_CONNECTION_NAME }}"' src/parameters.json
+          jq '.parameters.vaults_key_vault_name.value |= "${{ secrets.AZ_RG_DV_KEYVAULT_NAME }}"' src/parameters.json
+          jq '.parameters.workflows_lock_default_branch_name.value |= "${{ secrets.AZ_RG_DV_LOGICAPP_NAME }}"' src/parameters.json
+          jq '.parameters.strings_personal_access_token.value |= "${{ secrets.INTPLUS_GITHUB_APP_SECRET }}"' src/parameters.json
           echo ====== After ======
           cat 'src/parameters.json'
 
@@ -77,8 +50,8 @@ jobs:
         uses: Azure/arm-deploy@v1
         with:
           scope: subscription
-          region: ${{ github.event.inputs.location }}
-          resourceGroupName: ${{ github.event.inputs.resource_group_name }}
+          region: ${{ secrets.AZ_RG_DV_LOCATION }}
+          resourceGroupName: ${{ secrets.AZ_RG_DV_RESOURCE_GROUP }}
           template: 'src/template.json'
           deploymentMode: Incremental
           parameters: 'src/parameters.json'
