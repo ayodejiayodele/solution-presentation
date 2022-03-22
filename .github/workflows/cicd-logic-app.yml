@@ -54,13 +54,13 @@ jobs:
       - name: Replace parameter values in parameters.json
         run: |
           echo ===== Before ======
-          cat '$GITHUB_WORKSPACE/src/parameters.json'
-          jq '.parameters.connections_logicapp_keyvault_name.value |= "$keyvault_logicapp_connection"' $GITHUB_WORKSPACE/src/parameters.json
-          jq '.parameters.vaults_key_vault_name.value |= "$keyvault_name"' $GITHUB_WORKSPACE/src/parameters.json
-          jq '.parameters.workflows_lock_default_branch_name.value |= "$logic_app_name"' $GITHUB_WORKSPACE/src/parameters.json
-          jq '.parameters.strings_personal_access_token.value |= "${{ secrets.GITHUB_APP_SECRET }}"' $GITHUB_WORKSPACE/src/parameters.json
+          cat 'src/parameters.json'
+          jq '.parameters.connections_logicapp_keyvault_name.value |= "$keyvault_logicapp_connection"' src/parameters.json
+          jq '.parameters.vaults_key_vault_name.value |= "$keyvault_name"' src/parameters.json
+          jq '.parameters.workflows_lock_default_branch_name.value |= "$logic_app_name"' src/parameters.json
+          jq '.parameters.strings_personal_access_token.value |= "${{ secrets.GITHUB_APP_SECRET }}"' src/parameters.json
           echo ====== After ======
-          cat '$GITHUB_WORKSPACE/src/parameters.json'
+          cat 'src/parameters.json'
 
       # Login to Azure
       - name: Azure Login
@@ -79,6 +79,6 @@ jobs:
           scope: subscription
           region: $location
           resourceGroupName: $resource_group_name
-          template: '$GITHUB_WORKSPACE/src/template.json'
+          template: 'src/template.json'
           deploymentMode: Incremental
-          parameters: '$GITHUB_WORKSPACE/src/parameters.json'
+          parameters: 'src/parameters.json'
