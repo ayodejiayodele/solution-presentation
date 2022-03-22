@@ -20,6 +20,7 @@ jobs:
         run: |
           pwd
           ls
+          curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 
       # - name: Install jq
       #   run: sudo apt-get install jq
