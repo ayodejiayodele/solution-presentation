@@ -33,7 +33,7 @@ In addition to GitHub which serves as the primary service for storing and managi
     - Organization name - [integrityplus](https://github.com/integrityplus)
   - **Invite people, create teams and apply relevant roles**: 
     - Invite people: I registered one additional github user _@ayooutlook_ and invited it into the new organization. At least two users is needed in order to simulate different roles and code review approvals.
-    - Create teams: I created a team _@integrityplus/security-and-compliance_ and granted it the **security manager** role. Members of a team with the security manager role have only the permissions required to effectively manager the security for the organization. [Read more](https://docs.github.com/en/organizations/managing-peoples-access-to-your-organization-with-roles/managing-security-managers-in-your-organization)
+    - Create teams: I created a team _@integrityplus/security-and-compliance_ and granted it the **security manager** role. Members of a team with the security manager role have only the permissions required to effectively manage the security for the organization. [Read more](https://docs.github.com/en/organizations/managing-peoples-access-to-your-organization-with-roles/managing-security-managers-in-your-organization)
   
 ## Secure the organization
 It is important to configure security features in the organization to complement the specific security requirements in the customer's brief. The following features were enabled in the organization:
@@ -57,9 +57,13 @@ The .github directory is used to store community health files as well as the org
 ## Implement default branch protection
 This was achieved with two components, a webhook to listen to [organization events](https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads), and a [custom web API](src/readme.md) to receive the delivery of the webhook's payload and orchestrate the application of the branch protection as well as create the issue in the repository.
 
+### Web API
+
+A separate documentation is dedicated to the Web API. Please visit the [src directory](./src/README.md).
+
 ### Webhook
 
-> Before creating the webhook, the URL of the API needs to be ready. Therefore, you should already deploy/host the web API before carrying out this step.
+> Before creating the webhook, the URL of the API needs to be ready. Therefore, you should already deploy/host the [web API](#web-api) before carrying out this step.
 
 The webhook was created with the following properties:
 | Property | Value |
@@ -69,7 +73,3 @@ The webhook was created with the following properties:
 | SSL verification | Enable |
 | Events to trigger | Branch or tag creation _(only 1 event)_ |
 
-
-### Web API
-
-A separate documentation is dedicated to the Web API. Please visit the [src directory](./src/README.md).
