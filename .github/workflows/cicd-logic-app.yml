@@ -18,49 +18,64 @@ on:
         required: true
         type: string
         default: 'github-test-demo'
+      location:
+        description: 'Azure region to deploy to'
+        type: string
+        default: 'australiasoutheast'
       subscription_id:
         description: 'Azure subscription id'
         required: true
         type: string
+      keyvault_name:
+        description: 'Name of the Azure Key Vault resource'
+        required: true
+        type: string
+      logic_app_name:
+        description: 'Name of the Logic App web API resource'
+        required: true
+        type: string
+        
+env:
+  keyvault_logicapp_connection: kv-la-conn
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  azure_login:
-    # The type of runner that the job will run on
+  azure_deploy:
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
+      # - name: Install jq
+      #   run: sudo apt-get install jq
 
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
+      - name: Replace parameter values in parameters.json
         run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+          echo ===== Before ======
+          cat '$GITHUB_WORKSPACE/src/parameters.json'
+          jq '.parameters.connections_logicapp_keyvault_name.value |= "$keyvault_logicapp_connection"' $GITHUB_WORKSPACE/src/parameters.json
+          jq '.parameters.vaults_key_vault_name.value |= "$keyvault_name"' $GITHUB_WORKSPACE/src/parameters.json
+          jq '.parameters.workflows_lock_default_branch_name.value |= "$logic_app_name"' $GITHUB_WORKSPACE/src/parameters.json
+          jq '.parameters.strings_personal_access_token.value |= "${{ secrets.GITHUB_APP_SECRET }}"' $GITHUB_WORKSPACE/src/parameters.json
+          echo ====== After ======
+          cat '$GITHUB_WORKSPACE/src/parameters.json'
 
       # Login to Azure
       - name: Azure Login
         uses: Azure/login@v1.4.3
         with:
-          # Paste output of `az ad sp create-for-rbac` as value of secret variable: AZURE_CREDENTIALS
+          # Secret of the Azure Service principal
           creds: ${{ secrets.AZ_RG_DV_GITHUB_TEST_DEMO }}
-          # ClientId of the Azure Service principal created.
-          client-id: ${{ secrets.AZ_RG_DV_GITHUB_TEST_DEMO_CLIENT_ID }}
-          
+          # ClientId of the Azure Service principal
+          client-id: ${{ secrets.AZ_RG_DV_GITHUB_TEST_DEMO_CLIENT_ID }}          
           # Azure subscriptionId
-          subscription-id: # optional
-          # Set this value to true to enable Azure PowerShell Login in addition to Az CLI login
-          enable-AzPSSession: # optional
-          # Name of the environment. Supported values are azurecloud, azurestack, azureusgovernment, azurechinacloud, azuregermancloud. Default being azurecloud
-          environment: # optional, default is azurecloud
-          # Set this value to true to enable support for accessing tenants without subscriptions
-          allow-no-subscriptions: # optional
-          # Provide audience field for access-token. Default value is api://AzureADTokenExchange
-          audience: # optional, default is api://AzureADTokenExchange
+          subscription-id: $subscription_id
+          
+      - name: Deploy Azure Resource Manager (ARM) Template
+        uses: Azure/arm-deploy@v1
+        with:
+          scope: subscription
+          region: $location
+          resourceGroupName: $resource_group_name
+          template: '$GITHUB_WORKSPACE/src/template.json'
+          deploymentMode: Incremental
+          parameters: '$GITHUB_WORKSPACE/src/parameters.json'
