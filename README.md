@@ -57,9 +57,13 @@ The .github directory is used to store community health files as well as the org
 ## Implement default branch protection
 This was achieved with two components, a webhook to listen to [organization events](https://docs.github.com/en/developers/webhooks-and-events/webhooks/webhook-events-and-payloads), and a [custom web API](src/readme.md) to receive the delivery of the webhook's payload and orchestrate the application of the branch protection as well as create the issue in the repository.
 
+### Web API
+
+A separate documentation is dedicated to the Web API. Please visit the [src directory](./src/README.md).
+
 ### Webhook
 
-> Before creating the webhook, the URL of the API needs to be ready. Therefore, you should already deploy/host the web API before carrying out this step.
+> Before creating the webhook, the URL of the API needs to be ready. Therefore, you should already deploy/host the [web API](#web-api) before carrying out this step.
 
 The webhook was created with the following properties:
 | Property | Value |
@@ -69,7 +73,3 @@ The webhook was created with the following properties:
 | SSL verification | Enable |
 | Events to trigger | Branch or tag creation _(only 1 event)_ |
 
-
-### Web API
-
-A separate documentation is dedicated to the Web API. Please visit the [src directory](./src/README.md).
