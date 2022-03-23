@@ -48,11 +48,5 @@ jobs:
       
       # Deploy template
       - name: Deploy Azure Resource Manager (ARM) Template
-        uses: Azure/arm-deploy@v1
-        with:
-          scope: subscription
-          region: ${{ secrets.AZ_RG_DV_LOCATION }}
-          resourceGroupName: ${{ secrets.AZ_RG_DV_RESOURCE_GROUP }}
-          template: 'src/template.json'
-          deploymentMode: Incremental
-          parameters: 'src/parameters.json'
+        run: az group deployment create --resource-group ${{ secrets.AZ_RG_DV_RESOURCE_GROUP }} --mode Incremental --parameters src/parameters.json --template-uri src/template.json
+
