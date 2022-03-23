@@ -4,7 +4,7 @@ name: CICD
 on:
 
   push:
-    branches: [ main, feature/add-ci-cd ]
+    branches: [ main ]
   pull_request:
     branches: [ main ]
   workflow_dispatch:
