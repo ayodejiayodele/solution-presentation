@@ -32,5 +32,6 @@ jobs:
           postUrl: ''
         run: |
           az group create --name ${{ secrets.AZ_RG_DV_RESOURCE_GROUP }} --location ${{ secrets.AZ_RG_DV_LOCATION }} --subscription ${{ secrets.AZ_RG_DV_SUBSCRIPTION }}
-          result = $(az deployment group create --resource-group ${{ secrets.AZ_RG_DV_RESOURCE_GROUP }} --mode Incremental --parameters src/parameters.json --template-file src/template.json)
+          $result = $(az deployment group create --resource-group ${{ secrets.AZ_RG_DV_RESOURCE_GROUP }} --mode Incremental --parameters src/parameters.json --template-file src/template.json)
+          
 
