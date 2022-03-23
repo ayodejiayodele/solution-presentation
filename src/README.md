@@ -103,13 +103,15 @@ Once validated to be true for both conditions, the API retrieves the personal ac
 ## How to Deploy
 This makes use of Azure ARM template deployment, using a [template file](template.json). For other deployment methods please visit [deployment operations on Azure](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/deploy-portal).
 
+### Manual Deployment
+
 [![Deploy To Azure](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fintegrityplus%2Fsolution-presentation%2Fmain%2Fsrc%2Ftemplate.json)
 
-### Pre-requiresites for deployment
+#### Pre-requisites for deployment
  - [x] An Azure subscription with at least `Contributor` role on the existing resource group or permissions to create a new one.
  - [x] A GitHub personal access token, copy temporarily to a text file. People with `admin` permissions to a repository can manage branch protection rules.
  
- ### Parameters required
+ #### Parameters required
  | Parameter Name        | Type         | Description |
  | --------------------- | ------------ | --- |
  | Key Vault Name        | string       | Name of the key vault resource. |
@@ -117,7 +119,34 @@ This makes use of Azure ARM template deployment, using a [template file](templat
  | Connection Name       | string       | Name of the connection resource connecting the logic app to the key vault. |
  | Personal Access Token | secureString | Personal access token copied earlier. |
 
- ### Post-deployment steps
+ #### Post-deployment steps
  Once the logic app is ready, open the logic app resource and click on Logic App designer. Then, click on the _When HTTP request is received_ trigger to expand it. Then copy the `HTTP POST URL` text into a temporary text file. Then create a webhook with the properties specified in the [solution approach](/README.md/#Implement-default-branch-protection).
 
 <img alt="Expanded trigger" src="images/trigger-expanded.png" width="600"></img>
+
+### Continuous Deployment
+A [GitHub Action workflow](https://github.com/integrityplus/solution-presentation/actions/workflows/cicd-logic-app.yml) has been configured to aid continuous delivery and continuous deployment purposes. This is powered by a [YAML workflow](/.github/workflows/cicd-logic-app.yml).
+
+| Workflow Triggers                    |
+| ------------------------------------ |
+| On push to the `main` branch.        |
+| On pull request to the `main` branch |
+| On workflow dispatch                 |
+
+#### Variables & Secrets
+The following secrets were used as variables in the workflow and are required for a successful deployment:
+
+| Repository Secrets                  | Description           |
+| ----------------------------------- | --------------------- |
+| AZ_RG_DV_SUBSCRIPTION               | Azure Subscription Id |
+| AZ_RG_DV_TENANT_ID                  | Azure Tenant Id       |
+
+| Environment Secrets (Staging) | Description                |
+| --------------------------- | ---------------------------- | 
+| AZ_RG_DV_CONNECTION_NAME | Name of the connection resource |
+| AZ_RG_DV_KEYVAULT_NAME   | Name of the key vault           |
+| AZ_RG_DV_LOCATION        | Name of the Azure region        |
+| AZ_RG_DV_LOGICAPP_NAME   | Name of the logic app           |
+| AZ_RG_DV_RESOURCE_GROUP  | Name of the resource group      |
+| INTPLUS_GITHUB_APP_SECRET| PAT token for GitHub            |
+
