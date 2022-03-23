@@ -29,9 +29,9 @@ jobs:
         run: |
           echo ===== Before ======
           cat 'src/parameters.json'
-          jq '.parameters.connections_logicapp_keyvault_name.value |= "${{ secrets.AZ_RG_DV_CONNECTION_NAME }}"'  src/parameters.json >  src/parameters.json
+          jq '.parameters.connections_logicapp_keyvault_name.value |= "${{ secrets.AZ_RG_DV_CONNECTION_NAME }}"'  src/parameters.json >  src/parameters_new.json
           echo ====== After 1 ======
-          cat 'src/parameters.json'
+          cat 'src/parameters_new.json'
           jq '.parameters.vaults_key_vault_name.value |= "${{ secrets.AZ_RG_DV_KEYVAULT_NAME }}"' src/parameters.json >  src/parameters.json
           echo ====== After 2 ======
           cat 'src/parameters.json'
