@@ -20,7 +20,7 @@ jobs:
         run: |
           pwd
           ls
-          curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+      # curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 
       # - name: Install jq
       #   run: sudo apt-get install jq
@@ -29,12 +29,18 @@ jobs:
         run: |
           echo ===== Before ======
           cat 'src/parameters.json'
-          jq '.parameters.connections_logicapp_keyvault_name.value |= "${{ secrets.AZ_RG_DV_CONNECTION_NAME }}"'  src/parameters.json >>  src/parameters_new.json
+          jq '.parameters.connections_logicapp_keyvault_name.value |= "${{ secrets.AZ_RG_DV_CONNECTION_NAME }}"'  src/parameters.json >>  src/parameters.json
+          echo ====== After 1 ======
+          cat 'src/parameters.json'
           jq '.parameters.vaults_key_vault_name.value |= "${{ secrets.AZ_RG_DV_KEYVAULT_NAME }}"' src/parameters.json >>  src/parameters.json
-          jq '.parameters.workflows_lock_default_branch_name.value |= "${{ secrets.AZ_RG_DV_LOGICAPP_NAME }}"' src/parameters.json >> src/parameters.json 
+          echo ====== After 2 ======
+          cat 'src/parameters.json'
+          jq '.parameters.workflows_lock_default_branch_name.value |= "${{ secrets.AZ_RG_DV_LOGICAPP_NAME }}"' src/parameters.json >> src/parameters.json
+          echo ====== After 3 ======
+          cat 'src/parameters.json'
           jq '.parameters.strings_personal_access_token.value |= "${{ secrets.INTPLUS_GITHUB_APP_SECRET }}"' src/parameters.json >>  src/parameters.json
           echo ====== After ======
-          cat 'src/parameters_new.json'
+          cat 'src/parameters.json'
 
       # Login to Azure
       - name: Azure Login
