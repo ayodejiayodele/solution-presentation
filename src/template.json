@@ -818,5 +818,11 @@
                 }
             }
         }
-    ]
+    ],
+    "outputs": {
+      "apiPostUrl": {
+        "type": "string",
+        "value": "[listCallbackURL(concat(resourceId('Microsoft.Logic/workflows', parameters('workflows_lock_default_branch_name')), '/triggers/manual'), '2016-06-01').value]"
+      },
+    }
 }
