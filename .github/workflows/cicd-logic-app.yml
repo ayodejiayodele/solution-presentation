@@ -38,15 +38,9 @@ jobs:
 
       # Login to Azure
       - name: Azure Login
-        uses: Azure/login@v1.4.3
-        with:
-          # Secret of the Azure Service principal
-          creds: ${{ secrets.AZ_RG_DV_GITHUB_TEST_DEMO }}
-          # ClientId of the Azure Service principal
-          client-id: ${{ secrets.AZ_RG_DV_GITHUB_TEST_DEMO_CLIENT_ID }}          
-          # Azure subscriptionId
-          subscription-id: ${{ github.event.inputs.subscription_id }}
-          
+        run: az login --service-principal -u ${{ secrets.AZ_RG_DV_GITHUB_TEST_DEMO_CLIENT_ID }} -p ${{ secrets.AZ_RG_DV_GITHUB_TEST_DEMO }} --tenant ${{ secrets. AZ_RG_DV_TENANT_ID }}
+      
+      # Deploy template
       - name: Deploy Azure Resource Manager (ARM) Template
         uses: Azure/arm-deploy@v1
         with:
