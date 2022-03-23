@@ -1,5 +1,5 @@
-# General Details
-## Branch protection at scale solution
+# Branch protection at scale solution
+## General Details
 I have given the customer an imaginary name.
 
 **Company Name:** Integrity Plus Inc.
