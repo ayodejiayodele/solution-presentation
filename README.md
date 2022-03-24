@@ -73,3 +73,4 @@ The webhook was created with the following properties:
 | SSL verification | Enable |
 | Events to trigger | Branch or tag creation _(only 1 event)_ |
 
+For a step-by-step guide on how to create a webhook, visit [GitHub Docs](https://docs.github.com/en/github-ae@latest/developers/webhooks-and-events/webhooks/creating-webhooks#setting-up-a-webhook).

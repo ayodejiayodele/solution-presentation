@@ -86,7 +86,6 @@ The following is an example payload showing the branch that was newly created in
      "issues_url": "https://api.github.com/repos/integrityplus/solution-presentation/issues{/number}",
      ...
    }
-  }
 ```
 
 ### Processing
@@ -120,7 +119,7 @@ This makes use of Azure ARM template deployment, using a [template file](templat
  | Personal Access Token | secureString | Personal access token copied earlier. |
 
  #### Post-deployment steps
- Once the logic app is ready, open the logic app resource and click on Logic App designer. Then, click on the _When HTTP request is received_ trigger to expand it. Then copy the `HTTP POST URL` text into a temporary text file. Then create a webhook with the properties specified in the [solution approach](/README.md/#Implement-default-branch-protection).
+ Once the logic app is ready, open the logic app resource and click on Logic App designer. Then, click on the _When HTTP request is received_ trigger to expand it. Copy the `HTTP POST URL` text into a temporary text file. Then, create a webhook with the properties specified in the [solution approach](/README.md/#webhook).
 
 <img alt="Expanded trigger" src="images/trigger-expanded.png" width="600"></img>
 
