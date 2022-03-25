@@ -20,9 +20,13 @@ jobs:
     environment: Build
     steps:
       - uses: actions/checkout@v2
+
+      # Login to Azure
+      - name: Azure Login
+        run: az login --service-principal -u ${{ secrets.AZ_RG_DV_GITHUB_TEST_DEMO_CLIENT_ID }} -p ${{ secrets.AZ_RG_DV_GITHUB_TEST_DEMO }} --tenant ${{ secrets. AZ_RG_DV_TENANT_ID }}
       
       - name: Validate template
-        run: az deployment group validate --resource-group mytest --mode Incremental --parameters src/parameters.json --template-file src/template.json
+        run: az deployment group validate --resource-group github-exercise --mode Incremental --parameters src/parameters.json --template-file src/template.json
       
   azure_deploy:
     if: ${{ github.ref == 'refs/heads/main' }}
