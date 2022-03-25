@@ -4,7 +4,7 @@ name: CICD
 on:
 
   push:
-    branches: [ main ]
+    branches: [ main, feature/quality-gate ]
   pull_request:
     branches: [ main ]
   workflow_dispatch:
@@ -15,7 +15,17 @@ on:
         default: 'One-off demo'
 
 jobs:
+  quality_gate:
+    runs-on: ubuntu-latest
+    environment: Build
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Validate template
+        run: az deployment group validate --resource-group ${{ secrets.AZ_RG_DV_RESOURCE_GROUP }} --mode Incremental --parameters src/parameters.json --template-file src/template.json
+      
   azure_deploy:
+    if: ${{ GITHUB_EVENT_NAME == 'push' }}
     runs-on: ubuntu-latest
     environment: Staging
     steps:
