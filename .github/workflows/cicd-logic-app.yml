@@ -22,7 +22,7 @@ jobs:
       - uses: actions/checkout@v2
       
       - name: Validate template
-        run: az deployment group validate --resource-group ${{ secrets.AZ_RG_DV_RESOURCE_GROUP }} --mode Incremental --parameters src/parameters.json --template-file src/template.json
+        run: az deployment group validate --resource-group mytest --mode Incremental --parameters src/parameters.json --template-file src/template.json
       
   azure_deploy:
     if: ${{ github.ref == 'refs/heads/main' }}
