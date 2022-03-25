@@ -4,7 +4,7 @@ name: CICD
 on:
 
   push:
-    branches: [ main, feature/quality-gate ]
+    branches: [ main ]
   pull_request:
     branches: [ main ]
   workflow_dispatch:
@@ -25,7 +25,7 @@ jobs:
         run: az deployment group validate --resource-group ${{ secrets.AZ_RG_DV_RESOURCE_GROUP }} --mode Incremental --parameters src/parameters.json --template-file src/template.json
       
   azure_deploy:
-    if: ${{ GITHUB_EVENT_NAME == 'push' }}
+    if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     environment: Staging
     steps:
